@@ -3,6 +3,7 @@ package com.java.ecommerce.basketservice.controller;
 import com.java.ecommerce.basketservice.entity.Basket;
 import com.java.ecommerce.basketservice.repository.BasketRepository;
 import com.java.ecommerce.basketservice.request.BasketRequest;
+import com.java.ecommerce.basketservice.request.PaymentRequest;
 import com.java.ecommerce.basketservice.service.BasketService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
@@ -31,5 +32,16 @@ public class BasketController {
     @PutMapping("/{id}")
     public ResponseEntity<Basket> updateBasket(@PathVariable String id, @RequestBody BasketRequest request){
         return ResponseEntity.status(HttpStatus.OK).body(basketService.basketUpdate(id, request));
+    }
+
+    @PutMapping("/{id}/payment")
+    public ResponseEntity<Basket> payBasket(@PathVariable String id, @RequestBody PaymentRequest request){
+        return ResponseEntity.status(HttpStatus.OK).body(basketService.payBasket(id, request));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBasket(@PathVariable String id){
+        basketService.deleteBasketId
+
     }
 }

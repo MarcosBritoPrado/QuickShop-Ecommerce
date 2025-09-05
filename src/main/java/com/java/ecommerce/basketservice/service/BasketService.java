@@ -6,6 +6,7 @@ import com.java.ecommerce.basketservice.entity.Product;
 import com.java.ecommerce.basketservice.entity.Status;
 import com.java.ecommerce.basketservice.repository.BasketRepository;
 import com.java.ecommerce.basketservice.request.BasketRequest;
+import com.java.ecommerce.basketservice.request.PaymentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -71,5 +72,13 @@ public class BasketService  {
         basket.calculateTotalPrice();
 
         return basketRepository.save(basket);
+    }
+
+    public Basket payBasket(String basketid, PaymentRequest paymentRequest) {
+        Basket savebasket = getBasketById(basketid);
+        savebasket.setPaymentMethod(paymentRequest.getPaymentMethod());
+        savebasket.setStatus(Status.SOLD);
+        return basketRepository.save(savebasket);
+
     }
 }
