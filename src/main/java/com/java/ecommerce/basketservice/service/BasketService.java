@@ -81,4 +81,8 @@ public class BasketService  {
         return basketRepository.save(savebasket);
 
     }
+
+    public void deleteBasketId(String basketid) {
+         basketRepository.delete(getBasketById(basketid));
+    }
 }

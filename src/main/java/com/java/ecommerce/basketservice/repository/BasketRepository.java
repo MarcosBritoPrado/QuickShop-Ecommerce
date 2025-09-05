@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface BasketRepository extends MongoRepository<Basket, String> {
     Optional<Basket> findByClientAndStatus(Long client, Status status);
+
+    String id(String id);
 }
