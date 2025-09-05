@@ -7,6 +7,7 @@ import com.java.ecommerce.basketservice.entity.Status;
 import com.java.ecommerce.basketservice.repository.BasketRepository;
 import com.java.ecommerce.basketservice.request.BasketRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ import java.util.List;
 public class BasketService  {
     private final BasketRepository basketRepository;
     private final ProductService productService;
-
 
     public Basket getBasketById(String id) {
         return basketRepository.findById(id)
@@ -50,6 +50,26 @@ public class BasketService  {
                 .build();
 
         basket.calculateTotalPrice();
+        return basketRepository.save(basket);
+    }
+
+    public Basket basketUpdate(String basketid, BasketRequest basketRequest) {
+        Basket basket = getBasketById(basketid);
+
+        List<Product> products = new ArrayList<>();
+        basketRequest.products().forEach(product -> {
+            PlatziProductResponse platziProductResponse = productService.getProductsById(product.id());
+            products.add(Product.builder()
+                    .id(platziProductResponse.id())
+                    .title(platziProductResponse.title())
+                    .price(platziProductResponse.price())
+                    .quantity(product.quantity())
+                    .build());
+        });
+
+        basket.setProducts(products);
+        basket.calculateTotalPrice();
+
         return basketRepository.save(basket);
     }
 }
